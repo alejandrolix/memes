@@ -1,0 +1,7 @@
+{
+  "name": "Meme Scraper Python DevContainer",
+  "dockerComposeFile": "../docker-compose.yaml",
+  "service": "app",
+  "workspaceFolder": "/workspace/memes",
+  "postCreateCommand": "pip install -r requirements.txt"
+}

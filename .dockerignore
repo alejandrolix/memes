@@ -1,0 +1,6 @@
+.env
+.devcontainer/
+__pychache__
+app/__pychache__/
+docker-compose.yaml
+Dockerfile

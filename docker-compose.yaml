@@ -1,0 +1,36 @@
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/python:3-3.14-trixie
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - ollama
+
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: memes_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  ollama:
+    container_name: memes-ollama-1
+    image: ollama/ollama:latest
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+
+volumes:
+  postgres-data:
+  ollama-data:
