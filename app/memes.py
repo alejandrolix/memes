@@ -147,7 +147,7 @@ def main() -> None:
             print(e.mensaje)
             raise
 
-        imagen["puntuacion"] = analisis["puntuacion"]
+        imagen["puntuacion"] = analisis["score"]
         print("--")
 
     imgs_ordenadas: list = sorted(datos_imagenes, key=lambda item: item["puntuacion"], reverse=True)
@@ -187,24 +187,87 @@ def obtener_imagen_base64(url: str) -> str:
 
 def obtener_analisis_imagen(base64_img: str) -> str:
     print("Obteniendo análisis de la imagen...")
-    prompt: str = """Eres un analizador experto en humor de memes. Analiza la imagen y puntúa únicamente el humor del meme.
-                        Considera:
+    prompt: str = """Actúa como un humorista experto en analizar memes e imágenes humorísticas.
 
-                        * Situación y contexto.
-                        * Texto y relación texto-imagen.
-                        * Sorpresa, ironía, absurdo o ingenio.
-                        * Facilidad para entender el chiste.
-                        * Originalidad y potencial de provocar risa.
+                    Tu tarea es analizar la imagen y determinar qué elementos generan humor y cuánto funciona el chiste.
 
-                        Asigna una puntuación de 0 a 10:
-                        0 = nada gracioso
-                        5 = moderadamente gracioso
-                        10 = extremadamente gracioso
+                    Analiza la imagen siguiendo estos pasos:
 
-                        No penalices calidad de imagen, resolución, ortografía o estilo visual, excepto si afectan directamente al chiste.
+                    1. CONTEXTO VISUAL
+                    - Describe brevemente qué aparece en la imagen.
+                    - Identifica personas, objetos, situaciones, expresiones, acciones y elementos relevantes.
 
-                        Devuelve SOLO JSON válido, sin markdown ni texto adicional:
-                        {"puntuacion":0,"explicacion":"explicación breve"}"""
+                    2. TEXTO
+                    - Extrae el texto visible en la imagen.
+                    - Explica qué significado tiene dentro del contexto del meme.
+                    - Si no hay texto, indícalo.
+
+                    3. ELEMENTOS HUMORÍSTICOS
+                    Identifica concretamente qué elementos pueden resultar graciosos:
+                    - Situación absurda o inesperada.
+                    - Contraste entre imagen y texto.
+                    - Ironía.
+                    - Sarcasmo.
+                    - Incongruencia.
+                    - Exageración.
+                    - Juego de palabras.
+                    - Referencia cultural.
+                    - Expresión facial o corporal.
+                    - Situación cotidiana con la que alguien puede identificarse.
+                    - Giro inesperado.
+                    - Humor negro o provocador, si existe.
+                    
+                    No inventes elementos que no estén presentes en la imagen.
+
+                    4. MECANISMO DEL CHISTE
+                    Explica brevemente por qué esos elementos pueden producir humor y cuál es el mecanismo principal del chiste.
+
+                    5. ORIGINALIDAD
+                    Evalúa si la idea parece:
+                    - muy predecible,
+                    - convencional,
+                    - original,
+                    - o especialmente ingeniosa.
+
+                    6. POTENCIA HUMORÍSTICA
+                    Evalúa cuánto potencial tiene la imagen para provocar una reacción de humor.
+
+                    7. PUNTUACIÓN
+                    Asigna una puntuación entre 0 y 10:
+
+                    Asigna una puntuación de 0 a 10:
+                    0 = nada gracioso
+                    5 = moderadamente gracioso
+                    10 = extremadamente gracioso
+
+                    IMPORTANTE:
+                    - La puntuación debe representar la eficacia humorística de la imagen, no la calidad técnica de la fotografía.
+                    - No otorgues una puntuación alta simplemente porque la imagen sea extraña.
+                    - No inventes contexto que no puedas observar.
+                    - No penalices una imagen simplemente porque el humor dependa de una referencia cultural.
+                    - Si el humor depende de una referencia que no puedes identificar con suficiente certeza, indícalo.
+                    - Sé crítico: no intentes hacer que todas las imágenes parezcan graciosas.
+                    - La puntuación debe ser coherente con tu análisis.
+                    - Devuelve únicamente JSON válido.
+                    - No escribas explicaciones fuera del JSON.
+
+                    FORMATO EXACTO:
+
+                    {
+                    "description": "Descripción breve de la imagen",
+                    "text": "Texto visible o null",
+                    "humorous_elements": [
+                        {
+                        "element": "Elemento humorístico",
+                        "explanation": "Por qué puede resultar gracioso"
+                        }
+                    ],
+                    "humor_mechanism": "Mecanismo principal del humor",
+                    "originality": "muy_baja | baja | media | alta | muy_alta",
+                    "humor_strength": "muy_baja | baja | media | alta | muy_alta",
+                    "score": 0,
+                    "score_explanation": "Explicación breve de la puntuación"
+                    }"""
 
     datos: dict = {
         "model": OLLAMA_MODEL,
