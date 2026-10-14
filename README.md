@@ -70,7 +70,7 @@ docker build -t memes-app .
 docker run --rm --env-file .env --network memes_default memes-app
 ```
 
-La aplicación se ejecuta una vez y termina después de procesar y notificar
+La aplicación se ejecuta una vez y termina después de procesar y enviar
 los memes encontrados. Para volver a ejecutarla, repite el último comando.
 
 ## Detener los servicios
