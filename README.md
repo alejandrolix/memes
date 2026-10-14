@@ -1,7 +1,9 @@
 # Memes
 
 Aplicación Python que obtiene los memes publicados en
-[CuantoCabrón](https://www.cuantocabron.com/), analiza las nuevas mediante un modelo multimodal de Ollama y guarda el resultado en PostgreSQL. Los tres memes con mejor puntuación se
+[CuantoCabrón](https://www.cuantocabron.com/), analiza los últimos memes mediante un modelo multimodal de Ollama y guarda el resultado en PostgreSQL.
+
+Por último, escoge los tres memes con mejor puntuación y se
 envían a un espacio de Google Chat mediante un webhook.
 
 ## Requisitos
